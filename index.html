@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INDEX</title>
+    <style>
+        body { font-family: 'Malgun Gothic', sans-serif; background-color: #f3f2f1; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 900px; margin: 0 auto; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 30px; }
+        
+        /* Updated Title Style */
+        .header-title { 
+            background-color: #107C41; 
+            color: white; 
+            font-size: 32px; 
+            margin-top: 0; 
+            font-weight: 800; 
+            padding: 15px 20px; 
+            text-align: center; 
+            border-radius: 6px;
+            letter-spacing: 2px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .section-title { font-size: 18px; color: #107C41; border-bottom: 2px solid #107C41; padding-bottom: 5px; margin-top: 25px; margin-bottom: 15px; font-weight: bold; }
+        .explanation { font-size: 15px; background: #e8f5e9; padding: 15px; border-radius: 6px; margin-bottom: 20px; line-height: 1.6; }
+        
+        .usage-box { border: 1px solid #ddd; background: #faf9f8; padding: 15px; border-radius: 6px; margin-bottom: 25px; }
+        .usage-box code { font-family: Consolas, monospace; font-size: 16px; font-weight: bold; color: #d83b01; }
+        
+        .excel-ui { border: 1px solid #c8c6c4; border-radius: 4px; overflow: hidden; font-family: 'Segoe UI', sans-serif; margin-bottom: 30px; }
+        
+        .formula-bar { display: flex; align-items: center; background: white; padding: 8px 10px; border-bottom: 1px solid #c8c6c4; }
+        .fx-icon { font-weight: bold; font-style: italic; color: #666; margin-right: 10px; user-select: none; }
+        .formula-input { flex-grow: 1; font-family: Consolas, monospace; font-size: 16px; letter-spacing: 0.5px; padding: 4px; }
+        
+        .excel-table { width: 100%; border-collapse: collapse; background: white; text-align: center; }
+        .excel-table th { background: #f3f2f1; border: 1px solid #c8c6c4; font-weight: normal; color: #666; padding: 6px; }
+        .excel-table td { border: 1px solid #c8c6c4; padding: 10px; position: relative; }
+        .excel-table .row-header { background: #f3f2f1; color: #666; width: 30px; }
+        
+        .input-group { display: flex; align-items: center; justify-content: center; gap: 15px; background: #f3f2f1; padding: 15px; border-radius: 6px; margin-bottom: 20px; }
+        .input-group label { font-weight: bold; color: #333; }
+        select { padding: 6px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; text-align: center; width: 80px; font-weight: bold; }
+        select:focus { outline: 2px solid #107C41; }
+        
+        .result-cell { font-weight: bold; color: #d83b01; background-color: #fff3e0; font-size: 16px; }
+        
+        .data-range { background-color: rgba(0, 120, 212, 0.05); }
+        .data-range.highlight-row { background-color: rgba(255, 235, 59, 0.3); }
+        .data-range.highlight-col { background-color: rgba(255, 235, 59, 0.3); }
+        .data-range.highlight-cell { background-color: #FFEB3B; font-weight: bold; border: 2px solid #d83b01; z-index: 10; }
+        
+        .border-top { border-top: 2px solid #0078D4 !important; }
+        .border-bottom { border-bottom: 2px solid #0078D4 !important; }
+        .border-left { border-left: 2px solid #0078D4 !important; }
+        .border-right { border-right: 2px solid #0078D4 !important; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="header-title">INDEX</h1>
+    
+    <div class="section-title">1. 함수 역할</div>
+    <div class="explanation">
+        지정한 범위 안에서 <b>몇 번째 줄(행)</b>, <b>몇 번째 칸(열)</b>에 있는 데이터를 가져올지 정확히 짚어주는 함수입니다.<br>
+        마치 자판기에서 '3열 2행' 버튼을 눌러 원하는 음료수를 뽑는 것과 같은 원리입니다.
+    </div>
+
+    <div class="section-title">2. 사용 방법</div>
+    <div class="usage-box">
+        <code>=INDEX(데이터 범위, 행 번호, 열 번호)</code>
+        <ul style="margin-top: 10px; margin-bottom: 0; padding-left: 20px; font-size: 14px;">
+            <li><b>데이터 범위:</b> 값을 찾을 전체 표 영역 (파란색 박스)</li>
+            <li><b>행 번호:</b> 위에서부터 몇 번째 줄인지 (숫자)</li>
+            <li><b>열 번호:</b> 왼쪽에서부터 몇 번째 칸인지 (숫자)</li>
+        </ul>
+    </div>
+
+    <div class="section-title">3. 실습 예시 (자판기)</div>
+    <div class="input-group">
+        <label for="rowIndex">행 번호 (위에서 몇 번째?):</label>
+        <select id="rowIndex" onchange="calculateIndex()">
+            <option value="1">1행</option>
+            <option value="2" selected>2행</option>
+            <option value="3">3행</option>
+        </select>
+        
+        <label for="colIndex">열 번호 (왼쪽에서 몇 번째?):</label>
+        <select id="colIndex" onchange="calculateIndex()">
+            <option value="1">1열</option>
+            <option value="2">2열</option>
+            <option value="3" selected>3열</option>
+        </select>
+    </div>
+
+    <div class="excel-ui">
+        <div class="formula-bar">
+            <span class="fx-icon">fx</span>
+            <div class="formula-input" id="formula-index"></div>
+        </div>
+        <table class="excel-table" id="indexTable">
+            <thead>
+                <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="row-header">1</td>
+                    <td></td>
+                    <td colspan="3" style="text-align: left; font-weight: bold; padding-left: 10px; color: #0078D4;">[데이터 범위] (B2:D4)</td>
+                </tr>
+                <tr>
+                    <td class="row-header">2</td>
+                    <td style="font-weight:bold; background:#f3f2f1;">1행</td>
+                    <td class="data-range border-top border-left" data-row="1" data-col="1">콜라</td>
+                    <td class="data-range border-top" data-row="1" data-col="2">사이다</td>
+                    <td class="data-range border-top border-right" data-row="1" data-col="3">환타</td>
+                </tr>
+                <tr>
+                    <td class="row-header">3</td>
+                    <td style="font-weight:bold; background:#f3f2f1;">2행</td>
+                    <td class="data-range border-left" data-row="2" data-col="1">포카리스웨트</td>
+                    <td class="data-range" data-row="2" data-col="2">게토레이</td>
+                    <td class="data-range border-right" data-row="2" data-col="3">토레타</td>
+                </tr>
+                <tr>
+                    <td class="row-header">4</td>
+                    <td style="font-weight:bold; background:#f3f2f1;">3행</td>
+                    <td class="data-range border-bottom border-left" data-row="3" data-col="1">오렌지주스</td>
+                    <td class="data-range border-bottom" data-row="3" data-col="2">포도주스</td>
+                    <td class="data-range border-bottom border-right" data-row="3" data-col="3">사과주스</td>
+                </tr>
+                <tr>
+                    <td class="row-header">5</td>
+                    <td></td>
+                    <td style="font-weight:bold; background:#f3f2f1;">1열</td>
+                    <td style="font-weight:bold; background:#f3f2f1;">2열</td>
+                    <td style="font-weight:bold; background:#f3f2f1;">3열</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div style="text-align: right; font-size: 18px;">
+        선택된 음료수: <span class="result-cell" id="result-index" style="padding: 5px 15px; border-radius: 4px; display: inline-block; min-width: 80px; text-align: center;">-</span>
+    </div>
+</div>
+
+<script>
+    function highlightExcelFormula(text) {
+        const bracketColors = ['#D81B60', '#009688', '#8E24AA', '#1E88E5'];
+        let depth = 0;
+        let result = "";
+        const tokens = text.split(/([()])/);
+        
+        for (let token of tokens) {
+            if (token === '(') {
+                let color = bracketColors[depth % bracketColors.length];
+                result += `<span style="color:${color}; font-weight:900;">(</span>`;
+                depth++;
+            } else if (token === ')') {
+                depth--;
+                let colorIndex = Math.max(0, depth);
+                let color = bracketColors[colorIndex % bracketColors.length];
+                result += `<span style="color:${color}; font-weight:900;">)</span>`;
+            } else {
+                let coloredToken = token
+                    .replace(/(INDEX)/g, '<span style="color:#005fcc; font-weight:bold;">$1</span>')
+                    .replace(/(B2:D4)/g, '<span style="color:#0078D4; font-weight:bold;">$1</span>')
+                    .replace(/(\b[1-3]\b)/g, '<span style="color:#D81B60; font-weight:bold;">$1</span>');
+                result += coloredToken;
+            }
+        }
+        return result;
+    }
+
+    function calculateIndex() {
+        const r = parseInt(document.getElementById('rowIndex').value);
+        const c = parseInt(document.getElementById('colIndex').value);
+        
+        const cells = document.querySelectorAll('.data-range');
+        cells.forEach(cell => {
+            cell.classList.remove('highlight-row', 'highlight-col', 'highlight-cell');
+        });
+        
+        let selectedValue = "";
+        
+        cells.forEach(cell => {
+            const cellRow = parseInt(cell.getAttribute('data-row'));
+            const cellCol = parseInt(cell.getAttribute('data-col'));
+            
+            if (cellRow === r) cell.classList.add('highlight-row');
+            if (cellCol === c) cell.classList.add('highlight-col');
+            
+            if (cellRow === r && cellCol === c) {
+                cell.classList.add('highlight-cell');
+                selectedValue = cell.innerText;
+            }
+        });
+        
+        document.getElementById('result-index').innerText = selectedValue;
+        
+        let formula = `=INDEX(B2:D4, ${r}, ${c})   // 결과: ${selectedValue}`;
+        document.getElementById('formula-index').innerHTML = highlightExcelFormula(formula);
+    }
+    calculateIndex();
+</script>
+</body>
+</html>
